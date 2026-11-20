@@ -5,8 +5,9 @@ set -euo pipefail
 DOMAIN="ynh-test.local"
 ADMIN_USER="ynhadmin"   # "admin" is reserved by YunoHost
 ADMIN_PASS="Yunohost-Test-1234"
+INSTALLED_MARKER="${INSTALLED_MARKER:-/etc/yunohost/installed}"  # overridable for tests
 
-if [[ -f /etc/yunohost/installed ]]; then
+if [[ -f "$INSTALLED_MARKER" ]]; then
     echo "YunoHost already installed, nothing to do."
     exit 0
 fi
