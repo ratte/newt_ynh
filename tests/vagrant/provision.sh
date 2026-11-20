@@ -3,7 +3,7 @@
 set -euo pipefail
 
 DOMAIN="ynh-test.local"
-ADMIN_USER="admin"
+ADMIN_USER="ynhadmin"   # "admin" is reserved by YunoHost
 ADMIN_PASS="Yunohost-Test-1234"
 
 if [[ -f /etc/yunohost/installed ]]; then
@@ -11,12 +11,14 @@ if [[ -f /etc/yunohost/installed ]]; then
     exit 0
 fi
 
-export DEBIAN_FRONTEND=noninteractive
-apt-get update -qq
-apt-get install -y -qq curl ca-certificates
+if ! command -v yunohost >/dev/null; then
+    export DEBIAN_FRONTEND=noninteractive
+    apt-get update -qq
+    apt-get install -y -qq curl ca-certificates
 
-# -a = non-interactive
-curl -fsSL https://install.yunohost.org | bash -s -- -a
+    # -a = non-interactive
+    curl -fsSL https://install.yunohost.org | bash -s -- -a
+fi
 
 yunohost tools postinstall \
     --domain "$DOMAIN" \
@@ -25,6 +27,11 @@ yunohost tools postinstall \
     --password "$ADMIN_PASS" \
     --ignore-dyndns \
     --force-diskspace
+
+# YunoHost restricts SSH via "AllowGroups ssh.main sftp.main ssh.app sftp.app admins root";
+# keep "vagrant ssh" working by putting the vagrant user in a local ssh.app group.
+groupadd -f ssh.app
+usermod -aG ssh.app vagrant
 
 echo
 echo "YunoHost ready: https://192.168.56.10 (user: $ADMIN_USER / $ADMIN_PASS)"
