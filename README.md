@@ -27,3 +27,13 @@ tools/bump_version.sh 1.21.0   # bump to a new upstream release
 
 - Upstream: <https://github.com/fosrl/newt>
 - Pangolin docs: <https://docs.pangolin.net>
+
+## Local testing (Vagrant + VirtualBox)
+
+```bash
+vagrant up                                              # Debian 12 + YunoHost 12 (first run ~15 min)
+vagrant rsync                                           # after changing the package
+vagrant ssh -c "sudo /vagrant/tests/vagrant/lifecycle.sh"
+```
+
+The lifecycle test covers install, permissions/sandbox, setting change + upgrade, backup, remove, restore and a second instance. Pass `EP=… ID=… SECRET=…` to test against a real Pangolin server.
