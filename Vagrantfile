@@ -1,5 +1,8 @@
 # Local test VM for newt_ynh (YunoHost 13 beta on Debian 13 "trixie")
 #
+# Host requirements: VirtualBox 7.x, Vagrant >= 2.4, rsync, amd64 CPU with
+# VT-x/AMD-V enabled (see README.md, "Local testing > Requirements").
+#
 #   vagrant up                     # creates VM, installs + post-installs YunoHost (~15 min first time)
 #   vagrant rsync                  # push package changes into the VM
 #   vagrant ssh -c "sudo /vagrant/tests/vagrant/lifecycle.sh"

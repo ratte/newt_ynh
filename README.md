@@ -66,6 +66,29 @@ tools/bump_version.sh 1.21.0   # bump to a new upstream release
 
 ## Local testing (Vagrant + VirtualBox)
 
+### Requirements
+
+On the host machine:
+
+- [VirtualBox](https://www.virtualbox.org/wiki/Downloads) 7.x
+- [Vagrant](https://developer.hashicorp.com/vagrant/install) 2.4 or newer
+- `rsync`, used for the synced folder (included on Linux and macOS; on Windows use WSL or the rsync from Cygwin/MSYS2)
+- An x86_64 (amd64) CPU with hardware virtualization (VT-x/AMD-V) enabled in the BIOS/UEFI. Apple Silicon Macs are not supported: the box and the provisioning are amd64 only.
+- About 2 GB of free RAM and 10 GB of free disk space
+- Internet access while provisioning (Vagrant box, YunoHost installer, Newt release)
+
+On Linux hosts, VirtualBox may refuse to start a VM while KVM is in use (for example by libvirt/QEMU). In that case stop those VMs or unload the `kvm_intel`/`kvm_amd` module first.
+
+Check the installation:
+
+```bash
+vagrant --version
+VBoxManage --version
+rsync --version | head -1
+```
+
+### Running the tests
+
 ```bash
 vagrant up                                              # Debian 13 + YunoHost 13 beta (first run ~15 min)
 vagrant rsync                                           # after changing the package
