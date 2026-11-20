@@ -1,0 +1,11 @@
+#:schema https://raw.githubusercontent.com/YunoHost/apps/main/schemas/tests.v1.schema.json
+
+test_format = 1.0
+
+[default]
+
+    # Dummy credentials: Newt starts and keeps retrying the connection,
+    # which is enough to validate install/upgrade/backup/restore/remove.
+    args.pangolin_endpoint = "https://pangolin.example.org"
+    args.newt_id = "31frd0uzbjvp721"
+    args.newt_secret = "h51mmlknrvrwv8s4r1i210azhumt6isgbpyavxodibx1k2d6"

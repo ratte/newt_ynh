@@ -1,0 +1,47 @@
+[Unit]
+Description=Newt - Pangolin site connector (__APP__)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=__APP__
+Group=__APP__
+EnvironmentFile=__INSTALL_DIR__/newt.env
+Environment=HOME=/var/lib/__APP__
+StateDirectory=__APP__
+StateDirectoryMode=0750
+WorkingDirectory=/var/lib/__APP__
+ExecStart=__INSTALL_DIR__/newt
+Restart=always
+RestartSec=10
+StandardOutput=append:/var/log/__APP__/__APP__.log
+StandardError=inherit
+
+# Sandboxing
+NoNewPrivileges=yes
+PrivateTmp=yes
+PrivateDevices=yes
+RestrictAddressFamilies=AF_UNIX AF_INET AF_INET6 AF_NETLINK
+RestrictNamespaces=yes
+RestrictRealtime=yes
+RestrictSUIDSGID=yes
+DevicePolicy=closed
+ProtectClock=yes
+ProtectHostname=yes
+ProtectHome=yes
+ProtectProc=invisible
+ProtectSystem=strict
+ProtectControlGroups=yes
+ProtectKernelModules=yes
+ProtectKernelTunables=yes
+ProtectKernelLogs=yes
+LockPersonality=yes
+MemoryDenyWriteExecute=yes
+SystemCallArchitectures=native
+SystemCallFilter=~@clock @debug @module @mount @obsolete @reboot @setuid @swap @cpu-emulation @privileged
+CapabilityBoundingSet=
+AmbientCapabilities=
+
+[Install]
+WantedBy=multi-user.target

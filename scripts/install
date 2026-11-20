@@ -1,0 +1,58 @@
+#!/bin/bash
+
+#=================================================
+# IMPORT GENERIC HELPERS
+#=================================================
+
+source _common.sh
+source /usr/share/yunohost/helpers
+
+#=================================================
+# CHECK AND STORE SETTINGS
+#=================================================
+
+pangolin_endpoint="${pangolin_endpoint%/}"
+if [[ ! "$pangolin_endpoint" =~ ^https?://[^[:space:]/]+(/[^[:space:]]*)?$ ]]; then
+    ynh_die "The Pangolin URL must look like https://pangolin.example.org"
+fi
+ynh_app_setting_set --key=pangolin_endpoint --value="$pangolin_endpoint"
+
+# Password questions are not saved automatically
+ynh_app_setting_set --key=newt_secret --value="$newt_secret"
+
+#=================================================
+# DOWNLOAD, CHECK AND UNPACK SOURCE
+#=================================================
+ynh_script_progression "Setting up source files..."
+
+ynh_setup_source --dest_dir="$install_dir"
+
+#=================================================
+# APP INITIAL CONFIGURATION
+#=================================================
+ynh_script_progression "Adding $app's configuration files..."
+
+_newt_add_config
+_newt_fix_permissions
+
+#=================================================
+# SYSTEM CONFIGURATION
+#=================================================
+ynh_script_progression "Adding system configurations related to $app..."
+
+ynh_config_add_logrotate
+ynh_config_add_systemd
+_newt_service_add
+
+#=================================================
+# START SYSTEMD SERVICE
+#=================================================
+ynh_script_progression "Starting $app's systemd service..."
+
+_newt_start
+
+#=================================================
+# END OF SCRIPT
+#=================================================
+
+ynh_script_progression "Installation of $app completed"
