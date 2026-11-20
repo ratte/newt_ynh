@@ -16,8 +16,13 @@ if ! command -v yunohost >/dev/null; then
     apt-get update -qq
     apt-get install -y -qq curl ca-certificates
 
-    # -a = non-interactive
-    curl -fsSL https://install.yunohost.org | bash -s -- -a
+    # The Bento box has no GRUB install device in debconf; without this the
+    # grub-pc upgrade aborts the non-interactive YunoHost install.
+    echo "grub-pc grub-pc/install_devices multiselect /dev/sda" | debconf-set-selections
+
+    # YunoHost 13 (trixie) is only published in the "testing" channel so far.
+    # -a = non-interactive, -d = distribution channel
+    curl -fsSL https://install.yunohost.org/trixie | bash -s -- -a -d testing
 fi
 
 yunohost tools postinstall \
