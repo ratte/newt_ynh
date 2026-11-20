@@ -97,6 +97,8 @@ vagrant ssh -c "sudo /vagrant/tests/vagrant/lifecycle.sh"
 
 The lifecycle test covers install, permissions/sandbox, setting change + upgrade, config panel, backup, remove, restore and a second instance. Pass `EP=… ID=… SECRET=…` to test against a real Pangolin server.
 
+The VM provisioning script itself has a quick unit test that runs on the host, without the VM or root (all system commands are stubbed): `tests/vagrant/provision_test.sh`.
+
 To install the package manually in the VM (e.g. to try the web admin config panel):
 
 ```bash
