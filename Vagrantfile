@@ -22,5 +22,7 @@ Vagrant.configure("2") do |config|
     vb.cpus = 2
   end
 
-  config.vm.provision "shell", path: "tests/vagrant/provision.sh"
+  # Reboot afterwards so the kernel upgraded by the YunoHost installer is
+  # actually running (the box ships an old, vulnerable kernel).
+  config.vm.provision "shell", path: "tests/vagrant/provision.sh", reboot: true
 end
