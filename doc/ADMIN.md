@@ -28,6 +28,17 @@ Do **not** expose Postfix through a raw TCP resource targeting `localhost:25`: P
 
 ### Changing credentials or log level
 
+Use the app's configuration panel in the webadmin (*Applications > Newt > Configuration*). Leave the secret field empty to keep the current secret. Saving regenerates `__INSTALL_DIR__/newt.env` and restarts the service.
+
+From the command line:
+
+```bash
+yunohost app config set __APP__ main.connection.newt_secret -v 'NEW_SECRET'
+yunohost app config set __APP__ main.logging.log_level -v DEBUG
+```
+
+Alternatively, change the settings directly and force an upgrade:
+
 ```bash
 yunohost app setting __APP__ newt_secret -v 'NEW_SECRET'
 yunohost app setting __APP__ newt_id -v 'NEW_ID'

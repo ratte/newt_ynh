@@ -1,6 +1,6 @@
 #!/bin/bash
 # Full lifecycle test of newt_ynh on a real YunoHost:
-# install, permissions/sandbox checks, settings change + upgrade,
+# install, permissions/sandbox checks, settings change + upgrade, config panel,
 # backup, remove, restore, multi-instance, final cleanup.
 # Run as root inside the test VM: sudo /vagrant/tests/vagrant/lifecycle.sh
 set -euo pipefail
@@ -82,6 +82,20 @@ if yunohost app upgrade newt -u "$PKG" --force; then
     check_instance newt
 else
     ko "upgrade failed"
+fi
+
+#-------------------------------------------------
+step "2b. Config panel"
+check "secret not exposed by config panel" \
+    bash -c "! yunohost app config get newt --full --output-as json | grep -qF '$SECRET'"
+if yunohost app config set newt --args "pangolin_endpoint=$EP/&newt_id=$ID&newt_secret=&log_level=WARN"; then
+    ok "config panel apply succeeded"
+    check "log_level WARN applied by config panel" grep -q '^LOG_LEVEL=WARN$' /var/www/newt/newt.env
+    check "trailing slash stripped from endpoint" grep -q "^PANGOLIN_ENDPOINT=$EP\$" /var/www/newt/newt.env
+    check "empty secret field keeps secret" grep -q "^NEWT_SECRET=$SECRET\$" /var/www/newt/newt.env
+    check_instance newt
+else
+    ko "config panel apply failed"
 fi
 
 #-------------------------------------------------

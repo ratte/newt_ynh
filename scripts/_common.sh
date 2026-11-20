@@ -21,6 +21,11 @@ _newt_fix_permissions() {
     chmod 640 "$install_dir/newt.env"
 }
 
+# Pangolin endpoint: http(s)://host[/path]
+_newt_endpoint_is_valid() {
+    [[ "$1" =~ ^https?://[^[:space:]/]+(/[^[:space:]]*)?$ ]]
+}
+
 _newt_add_config() {
     ynh_config_add --template="newt.env" --destination="$install_dir/newt.env"
 }

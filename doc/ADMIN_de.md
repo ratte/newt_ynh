@@ -28,6 +28,17 @@ Postfix **nicht** über eine Raw-TCP-Ressource mit Ziel `localhost:25` freigeben
 
 ### Zugangsdaten oder Log-Level ändern
 
+Über das Konfigurations-Panel der App in der Webadmin (*Applikationen > Newt > Konfiguration*). Das Secret-Feld leer lassen, um das aktuelle Secret zu behalten. Beim Speichern wird `__INSTALL_DIR__/newt.env` neu erzeugt und der Dienst neu gestartet.
+
+Auf der Kommandozeile:
+
+```bash
+yunohost app config set __APP__ main.connection.newt_secret -v 'NEUES_SECRET'
+yunohost app config set __APP__ main.logging.log_level -v DEBUG
+```
+
+Alternativ die Settings direkt ändern und ein Upgrade erzwingen:
+
 ```bash
 yunohost app setting __APP__ newt_secret -v 'NEUES_SECRET'
 yunohost app setting __APP__ newt_id -v 'NEUE_ID'

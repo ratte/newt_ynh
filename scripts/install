@@ -12,7 +12,7 @@ source /usr/share/yunohost/helpers
 #=================================================
 
 pangolin_endpoint="${pangolin_endpoint%/}"
-if [[ ! "$pangolin_endpoint" =~ ^https?://[^[:space:]/]+(/[^[:space:]]*)?$ ]]; then
+if ! _newt_endpoint_is_valid "$pangolin_endpoint"; then
     ynh_die "The Pangolin URL must look like https://pangolin.example.org"
 fi
 ynh_app_setting_set --key=pangolin_endpoint --value="$pangolin_endpoint"

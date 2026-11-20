@@ -1,0 +1,58 @@
+#:schema https://raw.githubusercontent.com/YunoHost/apps/main/schemas/config_panel.v1.schema.json
+
+version = "1.0"
+
+[main]
+name.en = "Newt configuration"
+name.fr = "Configuration de Newt"
+name.de = "Newt-Konfiguration"
+
+    [main.connection]
+    name.en = "Pangolin connection"
+    name.fr = "Connexion à Pangolin"
+    name.de = "Verbindung zu Pangolin"
+
+        [main.connection.pangolin_endpoint]
+        ask.en = "URL of your Pangolin server"
+        ask.fr = "URL de votre serveur Pangolin"
+        ask.de = "URL deines Pangolin-Servers"
+        help.en = "e.g. https://pangolin.example.org"
+        help.fr = "p. ex. https://pangolin.example.org"
+        help.de = "z. B. https://pangolin.example.org"
+        type = "url"
+        bind = "settings"
+
+        [main.connection.newt_id]
+        ask.en = "Newt ID"
+        ask.fr = "ID Newt"
+        ask.de = "Newt-ID"
+        help.en = "The 'ID' value of the site in Pangolin"
+        help.fr = "La valeur 'ID' du site dans Pangolin"
+        help.de = "Der Wert 'ID' der Site in Pangolin"
+        type = "string"
+        pattern.regexp = '^[a-zA-Z0-9]+$'
+        pattern.error = "Only letters and digits are allowed"
+        bind = "settings"
+
+        [main.connection.newt_secret]
+        ask.en = "Newt secret"
+        ask.fr = "Secret Newt"
+        ask.de = "Newt-Secret"
+        help.en = "Leave empty to keep the current secret"
+        help.fr = "Laisser vide pour conserver le secret actuel"
+        help.de = "Leer lassen, um das aktuelle Secret zu behalten"
+        type = "password"
+        optional = true
+
+    [main.logging]
+    name.en = "Logging"
+    name.fr = "Journalisation"
+    name.de = "Logging"
+
+        [main.logging.log_level]
+        ask.en = "Log level"
+        ask.fr = "Niveau de journalisation"
+        ask.de = "Log-Level"
+        type = "select"
+        choices = ["DEBUG", "INFO", "WARN", "ERROR"]
+        bind = "settings"

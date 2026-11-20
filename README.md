@@ -28,7 +28,7 @@ Your YunoHost server needs no public IP and no open or forwarded ports, so it wo
 - **Unprivileged and sandboxed:** runs as its own system user under strict systemd sandboxing (`ProtectSystem=strict`, no capabilities, syscall filter, …), no Docker
 - **Self-hosted only:** `NO_CLOUD=true` makes sure Newt never falls back to Pangolin Cloud
 - **Managed updates:** upgrades come through YunoHost; Newt's built-in self-updater is blocked because the binary is read-only for the app user
-- **Configurable:** Pangolin endpoint, Newt ID, secret and log level are asked at install time and can be changed later with `yunohost app setting`
+- **Configurable:** Pangolin endpoint, Newt ID, secret and log level are asked at install time and can be changed later in the webadmin config panel
 - **Multi-instance:** connect one YunoHost server to several Pangolin sites or servers
 - **Full YunoHost integration:** backup/restore, registered YunoHost service, log file with logrotate
 
@@ -69,11 +69,31 @@ vagrant rsync                                           # after changing the pac
 vagrant ssh -c "sudo /vagrant/tests/vagrant/lifecycle.sh"
 ```
 
-The lifecycle test covers install, permissions/sandbox, setting change + upgrade, backup, remove, restore and a second instance. Pass `EP=… ID=… SECRET=…` to test against a real Pangolin server.
+The lifecycle test covers install, permissions/sandbox, setting change + upgrade, config panel, backup, remove, restore and a second instance. Pass `EP=… ID=… SECRET=…` to test against a real Pangolin server.
+
+To install the package manually in the VM (e.g. to try the web admin config panel):
+
+```bash
+vagrant rsync
+# Interactive: asks for the Pangolin URL, Newt ID, secret and log level
+vagrant ssh -c "sudo yunohost app install /vagrant --force"
+# Or non-interactive, with your real Pangolin credentials
+vagrant ssh -c "sudo yunohost app install /vagrant --force --args 'pangolin_endpoint=https://pangolin.example.org&newt_id=YOUR_ID&newt_secret=YOUR_SECRET&log_level=INFO'"
+```
+
+`--force` is needed because the VM runs the YunoHost 13 beta and the package doesn't come from the official catalog.
+
+Check that Newt is running:
+
+```bash
+vagrant ssh -c "systemctl status newt; sudo tail -f /var/log/newt/newt.log"
+```
+
+With real credentials, the site shows up as online in Pangolin.
 
 Test VM details:
 
-- Last full lifecycle run: 67/67 passed on YunoHost 13.0.11 (Debian 13.7)
+- Last full lifecycle run: 83/83 passed on YunoHost 13.0.11 (Debian 13.7)
 - Box `bento/debian-13`; YunoHost is installed from the trixie **testing** channel, since YunoHost 13 is still in beta and not yet published as stable
 - Web admin: <https://192.168.56.10>, user `ynhadmin` / `Yunohost-Test-1234` (`admin` is reserved by YunoHost)
 - `vagrant destroy -f && vagrant up` rebuilds the VM from scratch

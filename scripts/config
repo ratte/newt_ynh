@@ -1,0 +1,67 @@
+#!/bin/bash
+
+#=================================================
+# IMPORT GENERIC HELPERS
+#=================================================
+
+source _common.sh
+source /usr/share/yunohost/helpers
+
+ynh_abort_if_errors
+
+#=================================================
+# SPECIFIC GETTERS FOR TOML SHORT KEY
+#=================================================
+
+# Never send the stored secret to the admin interface:
+# an empty field means "keep the current secret".
+get__newt_secret() {
+    echo ""
+}
+
+#=================================================
+# SPECIFIC VALIDATORS FOR TOML SHORT KEYS
+#=================================================
+
+validate__pangolin_endpoint() {
+    if ! _newt_endpoint_is_valid "$pangolin_endpoint"; then
+        echo "The Pangolin URL must look like https://pangolin.example.org"
+    fi
+}
+
+#=================================================
+# SPECIFIC SETTERS FOR TOML SHORT KEYS
+#=================================================
+
+set__pangolin_endpoint() {
+    pangolin_endpoint="${pangolin_endpoint%/}"
+    ynh_app_setting_set --key=pangolin_endpoint --value="$pangolin_endpoint"
+}
+
+set__newt_secret() {
+    if [[ -n "$newt_secret" && "$newt_secret" != "None" ]]; then
+        ynh_app_setting_set --key=newt_secret --value="$newt_secret"
+    fi
+}
+
+#=================================================
+# GENERIC FINALIZATION
+#=================================================
+
+ynh_app_config_apply() {
+    _ynh_app_config_apply
+
+    # Reload every value from the settings: setters may normalize
+    # values, and an empty secret field means "keep the current one"
+    pangolin_endpoint=$(ynh_app_setting_get --key=pangolin_endpoint)
+    newt_id=$(ynh_app_setting_get --key=newt_id)
+    newt_secret=$(ynh_app_setting_get --key=newt_secret)
+    log_level=$(ynh_app_setting_get --key=log_level)
+
+    ynh_systemctl --service="$app" --action="stop"
+    _newt_add_config
+    _newt_fix_permissions
+    _newt_start
+}
+
+ynh_app_config_run "$1"
