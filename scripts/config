@@ -29,6 +29,16 @@ validate__pangolin_endpoint() {
     fi
 }
 
+validate__published_domains() {
+    local domain
+    while read -r domain; do
+        if ! _newt_yunohost_domains | grep -qxF "$domain"; then
+            echo "'$domain' is not a YunoHost domain"
+            return
+        fi
+    done < <(_newt_published_domains)
+}
+
 #=================================================
 # SPECIFIC SETTERS FOR TOML SHORT KEYS
 #=================================================
@@ -57,11 +67,17 @@ ynh_app_config_apply() {
     newt_id=$(ynh_app_setting_get --key=newt_id)
     newt_secret=$(ynh_app_setting_get --key=newt_secret)
     log_level=$(ynh_app_setting_get --key=log_level)
+    published_domains=$(ynh_app_setting_get --key=published_domains)
+    pangolin_sso=$(ynh_app_setting_get --key=pangolin_sso)
+    real_ip=$(ynh_app_setting_get --key=real_ip)
+    diagnosis_ignore=$(ynh_app_setting_get --key=diagnosis_ignore)
 
     ynh_systemctl --service="$app" --action="stop"
     _newt_add_config
     _newt_fix_permissions
     _newt_start
+    _newt_sync_realip
+    _newt_sync_diagnosis
 }
 
 ynh_app_config_run "$1"

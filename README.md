@@ -26,22 +26,25 @@ Your YunoHost server needs no public IP and no open or forwarded ports, so it wo
 
 - **Outgoing connection only:** no port forwarding, no public IP needed on the YunoHost side
 - **Unprivileged and sandboxed:** runs as its own system user under strict systemd sandboxing (`ProtectSystem=strict`, no capabilities, syscall filter, …), no Docker
-- **Self-hosted only:** `NO_CLOUD=true` makes sure Newt never falls back to Pangolin Cloud
+- **Self-hosted Pangolin or Pangolin Cloud:** with a self-hosted Pangolin, `NO_CLOUD=true` makes sure Newt never falls back to Pangolin Cloud
+- **Publishes YunoHost domains:** select domains in the config panel and Newt creates the matching Pangolin resources (via a Pangolin blueprint)
+- **Real client IPs and fail2ban:** NGINX sees the real client IP, and fail2ban bans attackers in NGINX (firewall bans can't work through the tunnel)
+- **Quiet diagnosis:** DNS, HTTP reachability and port checks that fail behind Pangolin by design are ignored for the published domains
 - **Managed updates:** upgrades come through YunoHost; Newt's built-in self-updater is blocked because the binary is read-only for the app user
-- **Configurable:** Pangolin endpoint, Newt ID, secret and log level are asked at install time and can be changed later in the webadmin config panel
+- **Configurable:** Pangolin endpoint, Newt ID, secret and log level are asked at install time; everything can be changed later in the webadmin config panel
 - **Multi-instance:** connect one YunoHost server to several Pangolin sites or servers
 - **Full YunoHost integration:** backup/restore, registered YunoHost service, log file with logrotate
 
 ### Before installing
 
-Create a site in your Pangolin dashboard (**Sites > Add Site**, type **Newt**) and note the **endpoint**, **ID** and **secret** it shows you. After installing, add one HTTP resource per YunoHost domain in Pangolin, targeting `https://127.0.0.1:443` with the real domain as Host header/SNI.
+Create a site in your Pangolin dashboard (**Sites > Add Site**, type **Newt**) and note the **endpoint**, **ID** and **secret** it shows you. After installing, select the YunoHost domains to publish in the app's config panel. Each domain must exist under *Domains* in your Pangolin organization.
 
 ### Limitations
 
 - Pangolin SSH resources are not supported: the SSH auth daemon needs root and is disabled (`DISABLE_SSH=true`).
 - Newt's self-updater logs an error every 6 hours because it can't replace its binary. This is expected.
 
-See [doc/DESCRIPTION.md](doc/DESCRIPTION.md) and [doc/ADMIN.md](doc/ADMIN.md) for the full setup, real client IPs (fail2ban) and mail caveats.
+See [doc/DESCRIPTION.md](doc/DESCRIPTION.md) and [doc/ADMIN.md](doc/ADMIN.md) for the full setup, real client IPs (fail2ban), diagnosis and mail caveats.
 
 ## Install
 
@@ -93,7 +96,7 @@ With real credentials, the site shows up as online in Pangolin.
 
 Test VM details:
 
-- Last full lifecycle run: 83/83 passed on YunoHost 13.0.11 (Debian 13.7)
+- Last full lifecycle run: 123/123 passed on YunoHost 13.0.11 (Debian 13.7)
 - Box `bento/debian-13`; YunoHost is installed from the trixie **testing** channel, since YunoHost 13 is still in beta and not yet published as stable
 - Web admin: <https://192.168.56.10>, user `ynhadmin` / `Yunohost-Test-1234` (`admin` is reserved by YunoHost)
 - `vagrant destroy -f && vagrant up` rebuilds the VM from scratch

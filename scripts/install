@@ -20,6 +20,16 @@ ynh_app_setting_set --key=pangolin_endpoint --value="$pangolin_endpoint"
 # Password questions are not saved automatically
 ynh_app_setting_set --key=newt_secret --value="$newt_secret"
 
+# Changed later in the config panel
+published_domains=""
+ynh_app_setting_set --key=published_domains --value="$published_domains"
+pangolin_sso=0
+ynh_app_setting_set --key=pangolin_sso --value="$pangolin_sso"
+real_ip=1
+ynh_app_setting_set --key=real_ip --value="$real_ip"
+diagnosis_ignore=1
+ynh_app_setting_set --key=diagnosis_ignore --value="$diagnosis_ignore"
+
 #=================================================
 # DOWNLOAD, CHECK AND UNPACK SOURCE
 #=================================================
@@ -43,6 +53,7 @@ ynh_script_progression "Adding system configurations related to $app..."
 ynh_config_add_logrotate
 ynh_config_add_systemd
 _newt_service_add
+_newt_sync_realip
 
 #=================================================
 # START SYSTEMD SERVICE

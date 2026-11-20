@@ -28,6 +28,8 @@ chown "$app:$app" "/var/log/$app"
 ynh_restore "/etc/systemd/system/$app.service"
 systemctl enable "$app.service" --quiet
 _newt_service_add
+_newt_sync_realip
+_newt_sync_diagnosis
 
 #=================================================
 # START SYSTEMD SERVICE

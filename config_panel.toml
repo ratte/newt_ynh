@@ -44,6 +44,63 @@ name.de = "Newt-Konfiguration"
         type = "password"
         optional = true
 
+    [main.publish]
+    name.en = "Published domains"
+    name.fr = "Domaines publiés"
+    name.de = "Veröffentlichte Domains"
+
+        [main.publish.publish_info]
+        type = "markdown"
+        ask.en = "Newt creates one Pangolin resource per selected YunoHost domain; all apps of that domain become reachable through Pangolin. The domain must exist as a domain in your Pangolin organization and its DNS must point to Pangolin. Unselecting a domain does **not** delete its resource in Pangolin: delete it there."
+        ask.fr = "Newt crée une ressource Pangolin par domaine YunoHost sélectionné ; toutes les apps de ce domaine deviennent accessibles via Pangolin. Le domaine doit exister dans votre organisation Pangolin et son DNS doit pointer vers Pangolin. Désélectionner un domaine ne supprime **pas** sa ressource dans Pangolin : supprimez-la là-bas."
+        ask.de = "Newt legt pro ausgewählter YunoHost-Domain eine Pangolin-Ressource an; alle Apps dieser Domain sind dann über Pangolin erreichbar. Die Domain muss in deiner Pangolin-Organisation als Domain existieren und ihr DNS muss auf Pangolin zeigen. Eine abgewählte Domain wird in Pangolin **nicht** gelöscht: dort von Hand löschen."
+
+        [main.publish.published_domains]
+        ask.en = "Domains to publish"
+        ask.fr = "Domaines à publier"
+        ask.de = "Zu veröffentlichende Domains"
+        help.en = "YunoHost domains, e.g. cloud.example.org"
+        help.fr = "Domaines YunoHost, p. ex. cloud.example.org"
+        help.de = "YunoHost-Domains, z. B. cloud.example.org"
+        type = "tags"
+        optional = true
+        bind = "settings"
+
+        [main.publish.pangolin_sso]
+        ask.en = "Also require Pangolin login"
+        ask.fr = "Exiger aussi la connexion Pangolin"
+        ask.de = "Zusätzlich Pangolin-Login verlangen"
+        help.en = "Off: YunoHost's own login (SSO) protects the apps, as without Pangolin"
+        help.fr = "Désactivé : la connexion YunoHost (SSO) protège les apps, comme sans Pangolin"
+        help.de = "Aus: YunoHosts eigener Login (SSO) schützt die Apps, wie ohne Pangolin"
+        type = "boolean"
+        bind = "settings"
+
+        [main.publish.diagnosis_ignore]
+        ask.en = "Ignore diagnosis checks that fail behind Pangolin"
+        ask.fr = "Ignorer les diagnostics qui échouent derrière Pangolin"
+        ask.de = "Diagnose-Prüfungen ignorieren, die hinter Pangolin fehlschlagen"
+        help.en = "DNS records (A/AAAA) and HTTP reachability of the published domains; ports 80/443 when all public domains are published"
+        help.fr = "Enregistrements DNS (A/AAAA) et accessibilité HTTP des domaines publiés ; ports 80/443 si tous les domaines publics sont publiés"
+        help.de = "DNS-Einträge (A/AAAA) und HTTP-Erreichbarkeit der veröffentlichten Domains; Ports 80/443, wenn alle öffentlichen Domains veröffentlicht sind"
+        type = "boolean"
+        bind = "settings"
+
+    [main.security]
+    name.en = "Real client IPs"
+    name.fr = "IP réelles des clients"
+    name.de = "Echte Client-IPs"
+
+        [main.security.real_ip]
+        ask.en = "Use real client IPs and ban attackers in nginx"
+        ask.fr = "Utiliser les IP réelles et bannir les attaquants dans nginx"
+        ask.de = "Echte Client-IPs verwenden und Angreifer in nginx sperren"
+        help.en = "Without this, YunoHost sees every request as 127.0.0.1 and fail2ban can't ban anyone. Applies to all Newt instances."
+        help.fr = "Sans cela, YunoHost voit chaque requête comme 127.0.0.1 et fail2ban ne peut bannir personne. S'applique à toutes les instances Newt."
+        help.de = "Ohne das sieht YunoHost jede Anfrage als 127.0.0.1 und fail2ban kann niemanden sperren. Gilt für alle Newt-Instanzen."
+        type = "boolean"
+        bind = "settings"
+
     [main.logging]
     name.en = "Logging"
     name.fr = "Journalisation"

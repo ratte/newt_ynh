@@ -6,5 +6,8 @@ Newt baut einen ausgehenden WireGuard-Tunnel (im Userspace) von deinem YunoHost-
 
 - Nur ausgehende Verbindung: keine Portweiterleitung, keine öffentliche IP nötig
 - Läuft ohne Root-Rechte mit systemd-Sandboxing, ohne Docker
-- Zugangsdaten und Log-Level bei der Installation einstellbar
+- Veröffentlicht die YunoHost-Domains, die du auswählst: Newt legt die Pangolin-Ressourcen an
+- Echte Client-IPs in NGINX, fail2ban sperrt Angreifer in NGINX
+- Ignoriert die YunoHost-Diagnose-Prüfungen, die hinter Pangolin zwangsläufig fehlschlagen
+- Alles im Konfigurations-Panel der Webadmin einstellbar
 - Updates laufen über YunoHost (Newts eingebauter Self-Updater ist absichtlich blockiert)

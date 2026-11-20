@@ -20,13 +20,17 @@ ynh_systemctl --service="$app" --action="stop"
 ynh_script_progression "Ensuring downward compatibility..."
 
 ynh_app_setting_set_default --key=log_level --value="INFO"
+ynh_app_setting_set_default --key=published_domains --value=""
+ynh_app_setting_set_default --key=pangolin_sso --value="0"
+ynh_app_setting_set_default --key=real_ip --value="1"
+ynh_app_setting_set_default --key=diagnosis_ignore --value="1"
 
 #=================================================
 # DOWNLOAD, CHECK AND UNPACK SOURCE
 #=================================================
 ynh_script_progression "Upgrading source files..."
 
-ynh_setup_source --dest_dir="$install_dir" --full_replace --keep="newt.env"
+ynh_setup_source --dest_dir="$install_dir" --full_replace --keep="newt.env blueprint.yaml"
 
 #=================================================
 # UPDATE CONFIG FILE
@@ -45,6 +49,8 @@ ynh_script_progression "Upgrading system configurations related to $app..."
 ynh_config_add_logrotate
 ynh_config_add_systemd
 _newt_service_add
+_newt_sync_realip
+_newt_sync_diagnosis
 
 #=================================================
 # START SYSTEMD SERVICE
