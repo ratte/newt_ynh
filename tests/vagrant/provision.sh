@@ -14,7 +14,9 @@ fi
 if ! command -v yunohost >/dev/null; then
     export DEBIAN_FRONTEND=noninteractive
     apt-get update -qq
-    apt-get install -y -qq curl ca-certificates
+    # linux-headers-amd64: lets the VirtualBox Guest Additions rebuild their
+    # modules for the kernel the YunoHost installer upgrades to.
+    apt-get install -y -qq curl ca-certificates linux-headers-amd64
 
     # The Bento box has no GRUB install device in debconf; without this the
     # grub-pc upgrade aborts the non-interactive YunoHost install.
