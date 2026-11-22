@@ -1,4 +1,4 @@
-# Pnagolin for YunoHost
+# Pangolin for YunoHost
 
 > *This package allows you to use Pangolin on your YunoHost server.*
 
