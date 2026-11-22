@@ -30,7 +30,7 @@ Your YunoHost server needs no public IP and no open or forwarded ports, so it wo
 - **Publishes YunoHost domains:** select domains in the config panel and Newt creates the matching Pangolin resources (via a Pangolin blueprint)
 - **Real client IPs and fail2ban:** NGINX sees the real client IP, and fail2ban bans attackers in NGINX (firewall bans can't work through the tunnel)
 - **Quiet diagnosis:** DNS, HTTP reachability and port checks that fail behind Pangolin by design are ignored for the published domains
-- **Managed updates:** upgrades come through YunoHost; Newt's built-in self-updater is blocked because the binary is read-only for the app user
+- **Managed updates:** upgrades come through YunoHost; Newt's built-in self-updater is switched off (`NEWT_SYSTEM_SUBSTRATE=CONTAINER`), and the binary is read-only for the app user as a second safeguard
 - **Configurable:** Pangolin endpoint, Newt ID, secret and log level are asked at install time; everything can be changed later in the webadmin config panel
 - **Multi-instance:** connect one YunoHost server to several Pangolin sites or servers
 - **Full YunoHost integration:** backup/restore, registered YunoHost service, log file with logrotate
@@ -42,7 +42,7 @@ Create a site in your Pangolin dashboard (**Sites > Add Site**, type **Newt**) a
 ### Limitations
 
 - Pangolin SSH resources are not supported: the SSH auth daemon needs root and is disabled (`DISABLE_SSH=true`).
-- Newt's self-updater logs an error every 6 hours because it can't replace its binary. This is expected.
+- At startup, Newt may print a banner announcing a newer version with a `curl … | bash` install command. Ignore it: update through YunoHost instead.
 
 See [doc/DESCRIPTION.md](doc/DESCRIPTION.md) and [doc/ADMIN.md](doc/ADMIN.md) for the full setup, real client IPs (fail2ban), diagnosis and mail caveats.
 

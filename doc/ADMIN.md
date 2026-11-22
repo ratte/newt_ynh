@@ -49,4 +49,4 @@ Do **not** expose Postfix through a raw TCP resource targeting `localhost:25`: P
 ### Limitations
 
 - The SSH auth daemon (Pangolin SSH resources) is disabled, because it needs root.
-- Newt's built-in self-updater can't write its binary and logs an error every 6 hours. This is expected; updates come through YunoHost.
+- Newt's built-in self-updater is switched off (`NEWT_SYSTEM_SUBSTRATE=CONTAINER`); updates come through YunoHost. If Newt prints a banner about a newer version with a `curl … | bash` command at startup, ignore it.

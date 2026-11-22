@@ -39,6 +39,7 @@ check_instance() {
     check "[$app] env file root:$app 640" perm_is "$dir/newt.env" "root:$app 640"
     check_not "[$app] app user can NOT write install dir (self-update blocked)" \
         sudo -u "$app" touch "$dir/.write_test"
+    check "[$app] self-updater switched off" grep -q '^NEWT_SYSTEM_SUBSTRATE=CONTAINER$' "$dir/newt.env"
     check "[$app] env contains endpoint" grep -q "^PANGOLIN_ENDPOINT=$EP\$" "$dir/newt.env"
     check "[$app] NO_CLOUD and DISABLE_SSH set" \
         bash -c "grep -q '^NO_CLOUD=true' '$dir/newt.env' && grep -q '^DISABLE_SSH=true' '$dir/newt.env'"

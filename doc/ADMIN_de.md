@@ -49,4 +49,4 @@ Postfix **nicht** über eine Raw-TCP-Ressource mit Ziel `localhost:25` freigeben
 ### Einschränkungen
 
 - Der SSH-Auth-Daemon (Pangolin-SSH-Ressourcen) ist deaktiviert, weil er Root-Rechte braucht.
-- Newts eingebauter Self-Updater kann sein Binary nicht überschreiben und loggt alle 6 Stunden einen Fehler. Das ist so gewollt, Updates kommen über YunoHost.
+- Newts eingebauter Self-Updater ist abgeschaltet (`NEWT_SYSTEM_SUBSTRATE=CONTAINER`), Updates kommen über YunoHost. Zeigt Newt beim Start ein Banner zu einer neueren Version mit einem `curl … | bash`-Befehl, ignoriere es.

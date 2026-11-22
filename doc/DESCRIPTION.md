@@ -10,4 +10,4 @@ Newt opens an outgoing WireGuard tunnel (in user space) from your YunoHost serve
 - Real client IPs in NGINX, fail2ban bans attackers in NGINX
 - Ignores the YunoHost diagnosis checks that fail behind Pangolin by design
 - Everything configurable in the webadmin config panel
-- Upgrades are handled by YunoHost (Newt's built-in self-updater is blocked on purpose)
+- Upgrades are handled by YunoHost (Newt's built-in self-updater is switched off)
