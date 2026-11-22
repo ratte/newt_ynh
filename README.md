@@ -1,6 +1,6 @@
-# Newt for YunoHost
+# Pnagolin for YunoHost
 
-> *This package allows you to install Newt quickly and simply on a YunoHost server.*
+> *This package allows you to use Pangolin on your YunoHost server.*
 
 ## Overview
 
