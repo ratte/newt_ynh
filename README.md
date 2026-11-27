@@ -121,7 +121,7 @@ With real credentials, the site shows up as online in Pangolin.
 
 Test VM details:
 
-- Last full lifecycle run: 123/123 passed on YunoHost 13.0.11 (Debian 13.7)
+- Last full lifecycle run: 128/128 passed on YunoHost 13.0.11 (Debian 13.8)
 - Box `bento/debian-13`; YunoHost is installed from the trixie **testing** channel, since YunoHost 13 is still in beta and not yet published as stable. After the install, provisioning removes `testing` from `/etc/apt/sources.list.d/yunohost.sources`, so the VM gets no further testing upgrades
 - Web admin: <https://192.168.56.10>, user `ynhadmin` / `Yunohost-Test-1234` (`admin` is reserved by YunoHost)
 - `vagrant destroy -f && vagrant up` rebuilds the VM from scratch
