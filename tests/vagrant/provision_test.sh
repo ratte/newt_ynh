@@ -37,6 +37,7 @@ setup() {
     BIN="$TMP/bin"
     LOG="$TMP/calls.log"
     MARKER="$TMP/installed"
+    SOURCES="$TMP/yunohost.sources"
     mkdir -p "$BIN"
     : > "$LOG"
 
@@ -54,13 +55,14 @@ cat > \"$BIN/yunohost\" <<'YNH'
 echo \"yunohost \$*\" >> \"$LOG\"
 YNH
 chmod +x \"$BIN/yunohost\"
+printf 'Types: deb\\nURIs: https://repo.yunohost.org/debian/\\nSuites: trixie\\nComponents: stable testing\\n' > \"$SOURCES\"
 INSTALLER"
     [[ "${1:-}" == "with_yunohost" ]] && stub yunohost
 }
 
 run_provision() {
     OUT="$(env -i HOME="$TMP" PATH="$BIN:/usr/bin:/bin" INSTALLED_MARKER="$MARKER" \
-        bash "$SCRIPT" 2>&1)"
+        YNH_APT_SOURCES="$SOURCES" bash "$SCRIPT" 2>&1)"
     RC=$?
 }
 
@@ -87,6 +89,8 @@ called "presets grub-pc install device" \
     "debconf-stdin grub-pc grub-pc/install_devices multiselect /dev/sda"
 called "fetches the trixie installer" "curl -fsSL https://install.yunohost.org/trixie"
 called "runs installer non-interactively on testing channel" "installer -a -d testing"
+check_eq "testing channel removed from YunoHost APT source" "Components: stable" \
+    "$(grep '^Components:' "$SOURCES")"
 called "runs postinstall with test credentials" "$POSTINSTALL"
 called "creates ssh.app group" "groupadd -f ssh.app"
 called "adds vagrant to ssh.app" "usermod -aG ssh.app vagrant"
@@ -99,10 +103,12 @@ teardown
 
 step "Installer ran, postinstall did not (re-provision after failure)"
 setup with_yunohost
+printf 'Components: stable testing\n' > "$SOURCES"
 run_provision
 check_eq "exit code" 0 "$RC"
 not_called "skips apt-get" "apt-get"
 not_called "skips installer download" "curl"
+check_eq "still removes testing channel" "Components: stable" "$(cat "$SOURCES")"
 called "runs postinstall" "$POSTINSTALL"
 called "adds vagrant to ssh.app" "usermod -aG ssh.app vagrant"
 teardown

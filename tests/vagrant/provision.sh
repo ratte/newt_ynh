@@ -6,6 +6,7 @@ DOMAIN="ynh-test.local"
 ADMIN_USER="ynhadmin"   # "admin" is reserved by YunoHost
 ADMIN_PASS="Yunohost-Test-1234"
 INSTALLED_MARKER="${INSTALLED_MARKER:-/etc/yunohost/installed}"  # overridable for tests
+YNH_APT_SOURCES="${YNH_APT_SOURCES:-/etc/apt/sources.list.d/yunohost.sources}"  # overridable for tests
 
 if [[ -f "$INSTALLED_MARKER" ]]; then
     echo "YunoHost already installed, nothing to do."
@@ -26,6 +27,12 @@ if ! command -v yunohost >/dev/null; then
     # YunoHost 13 (trixie) is only published in the "testing" channel so far.
     # -a = non-interactive, -d = distribution channel
     curl -fsSL https://install.yunohost.org/trixie | bash -s -- -a -d testing
+fi
+
+# Install from testing, but don't keep pulling testing upgrades afterwards:
+# drop the "testing" component from the YunoHost APT source (idempotent).
+if [[ -f "$YNH_APT_SOURCES" ]]; then
+    sed -i -E '/^Components:/ s/[[:space:]]+testing\b//' "$YNH_APT_SOURCES"
 fi
 
 yunohost tools postinstall \
