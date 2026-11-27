@@ -47,7 +47,7 @@ Create a site in your Pangolin dashboard (**Sites > Add Site**, type **Newt**) a
 See [doc/DESCRIPTION.md](doc/DESCRIPTION.md) and [doc/ADMIN.md](doc/ADMIN.md) for the full setup, real client IPs (fail2ban), diagnosis and mail caveats.
 
 ## Install
-
+- 
 ```bash
 sudo yunohost app install https://github.com/ratte/newt_ynh --debug
 ```
